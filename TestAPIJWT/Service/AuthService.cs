@@ -44,7 +44,7 @@ namespace TestAPIJWT.Service
                 LastName = model.LastName
             };
 
-            var result = await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user,model.Password);
 
             if (!result.Succeeded) {
             
@@ -78,7 +78,7 @@ namespace TestAPIJWT.Service
             var authModel = new AuthModel();
 
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if( user is null || await _userManager.CheckPasswordAsync(user,model.Password) )
+            if( user is null || !await _userManager.CheckPasswordAsync(user,model.Password) )
             {
                 authModel.Message = "Email or Password is incorrect";
                 return authModel;
